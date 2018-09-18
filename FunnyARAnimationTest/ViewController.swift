@@ -16,6 +16,8 @@ enum AnimationType {
     case earthAnimation
     case newAnimation
     case allien
+    case newtonBalls
+    case finalAnimation
 }
 
 class ViewController: UIViewController, ARSCNViewDelegate {
@@ -26,7 +28,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     let lightEnvIntencity: CGFloat = 5.0
     let envImageName = "spherical"
     
-    private var animationType: AnimationType = .newAnimation
+    private var animationType: AnimationType = .finalAnimation
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -70,6 +72,12 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         case .allien:
             customScene = SCNScene(named: "art.scnassets/Allien/1.DAE")!
             allienAnimation(customScene: customScene)
+        case .newtonBalls:
+            customScene = SCNScene(named: "art.scnassets/NewtonBalls/NewtonBalls_Animation.DAE")!
+            addNodeNewtonBalls(customScene: customScene)
+        case .finalAnimation:
+            customScene = SCNScene(named: "art.scnassets/1/1.scn")!
+            self.addNodeFinalAnimation(customScene: customScene)
         default:
             break
         }
@@ -307,6 +315,40 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         node.position = SCNVector3(0, -1, -7)
         node.scale = SCNVector3(0.01, 0.01, 0.01)
         
+        // Add the node to the scene
+        sceneView.scene.rootNode.addChildNode(node)
+    }
+    
+    private func addNodeNewtonBalls(customScene: SCNScene) {
+        // This node will be parent of all the animation models
+        let node = SCNNode()
+        
+        // Add all the child nodes to the parent node
+        for child in customScene.rootNode.childNodes {
+            node.addChildNode(child)
+        }
+        
+        // Set up some properties
+        node.position = SCNVector3(1, -1, -2)
+        node.scale = SCNVector3(0.2, 0.2, 0.2)
+        
+        // Add the node to the scene
+        sceneView.scene.rootNode.addChildNode(node)
+    }
+    
+    private func addNodeFinalAnimation(customScene: SCNScene) {
+        // This node will be parent of all the animation models
+        let node = SCNNode()
+    
+        // Add all the child nodes to the parent node
+        for child in customScene.rootNode.childNodes {
+        node.addChildNode(child)
+        }
+    
+        // Set up some properties
+        node.position = SCNVector3(1, -1, -15)
+        node.scale = SCNVector3(0.01, 0.01, 0.01)
+    
         // Add the node to the scene
         sceneView.scene.rootNode.addChildNode(node)
     }
