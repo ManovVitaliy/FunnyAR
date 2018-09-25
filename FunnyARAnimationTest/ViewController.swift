@@ -185,10 +185,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
             customScene21 = SCNScene(named: "art.scnassets/TestGeometry/Sky/Sky_2.scn")!
             skyAnimation(customScene: customScene21)
         }
-        
-        let envImage = UIImage(named: envImageName)
-        sceneView.scene.lightingEnvironment.contents = envImage
-        sceneView.scene.lightingEnvironment.intensity = lightEnvIntencity
+        addLightToRootScene()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -224,6 +221,18 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     }
     
     //helper functions
+    private func addLightToRootScene() {
+        let envImage = UIImage(named: envImageName)
+        sceneView.scene.lightingEnvironment.contents = envImage
+        sceneView.scene.lightingEnvironment.intensity = lightEnvIntencity
+        
+        let light = SCNLight()
+        let lightNode = SCNNode()
+        lightNode.light = light
+        lightNode.position = SCNVector3(-2, -1, -7)
+        
+        sceneView.scene.rootNode.addChildNode(lightNode)
+    }
     
     private func addNodeTwistForAnnaOne(customScene: SCNScene){
         // This node will be parent of all the animation models
