@@ -67,7 +67,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     @IBOutlet var sceneView: ARSCNView!
 
     //constants
-    let lightEnvIntencity: CGFloat = 5.0
+    let lightEnvIntencity: CGFloat = 0.7
     let envImageName = "spherical"
     
     private var animationType: AnimationType = .testGeometry
@@ -136,7 +136,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
             allienAnimationNew(customScene: customScene3)
         case .testGeometry:
             //earth
-            customScene = SCNScene(named: "art.scnassets/TestGeometry/Earth_all.scn")!
+            customScene = SCNScene(named: "art.scnassets/TestGeometry/Earth_fixed.scn")!
             earthAnimation(customScene: customScene)
             //project life cycle
             customScene2 = SCNScene(named: "art.scnassets/TestGeometry/Project_Life_Cycle.DAE")!
@@ -165,7 +165,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
             //Smoke
             customScene12 = SCNScene(named: "art.scnassets/TestGeometry/SmokeNew/SmokeNew.scn")!
             smokeAnimationNew(customScene: customScene12)
-            customScene13 = SCNScene(named: "art.scnassets/TestGeometry/SmokeNew/SmokeNew_2.scn")!
+            customScene13 = SCNScene(named: "art.scnassets/TestGeometry/SmokeNew/Smoke_3.scn")!
             smokeAnimationNew(customScene: customScene13)
             //fire
             customScene14 = SCNScene(named: "art.scnassets/TestGeometry/Fire/Fire_1.scn")!
@@ -183,7 +183,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
             //sky
             customScene20 = SCNScene(named: "art.scnassets/TestGeometry/Sky/Sky_1.scn")!
             skyAnimation(customScene: customScene20)
-            customScene21 = SCNScene(named: "art.scnassets/TestGeometry/Sky/Sky_2.scn")!
+            customScene21 = SCNScene(named: "art.scnassets/TestGeometry/Sky/Sky_3.scn")!
             skyAnimation(customScene: customScene21)
             //allien
             customScene22 = SCNScene(named: "art.scnassets/TestGeometry/Allien/2.scn")!
@@ -232,8 +232,9 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         
         let light = SCNLight()
         let lightNode = SCNNode()
+        light.intensity = 100.0
         lightNode.light = light
-        lightNode.position = SCNVector3(-2, -1, -7)
+        lightNode.position = SCNVector3(0, 1, -6)
         
         sceneView.scene.rootNode.addChildNode(lightNode)
     }
@@ -531,6 +532,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
                 
                 material.lightingModel = SCNMaterial.LightingModel.physicallyBased
                 material.diffuse.contents = UIImage(named: "art.scnassets/TestGeometry/Sky/T_Sky_D.jpg")
+                material.transparency = 0.8
             }
             node.addChildNode(child)
         }
@@ -555,14 +557,26 @@ class ViewController: UIViewController, ARSCNViewDelegate {
             }
             node.addChildNode(child)
         }
-        addNodeToSceneView(node: node)
+        addNodeAllienToSceneView(node: node)
     }
     
     private func addNodeToSceneView(node: SCNNode) {
         // Set up some properties
-        node.position = SCNVector3(0, -1, -10)
+        node.position = SCNVector3(-0.8, -2, -10)
         node.scale = SCNVector3(0.01, 0.01, 0.01)
         node.pivot = SCNMatrix4Rotate(node.pivot, 3 * .pi / 2, 0, 1, 0)
+        
+        // Add the node to the scene
+        sceneView.scene.rootNode.addChildNode(node)
+        
+    }
+    
+    private func addNodeAllienToSceneView(node: SCNNode) {
+        // Set up some properties
+        node.position = SCNVector3(0, -2, -8)
+        node.scale = SCNVector3(0.01, 0.01, 0.01)
+        node.pivot = SCNMatrix4Rotate(node.pivot, 3 * .pi / 2, 0, 1, 0)
+        node.pivot = SCNMatrix4Rotate(node.pivot, .pi / 8, 1, 0, 0)
         
         // Add the node to the scene
         sceneView.scene.rootNode.addChildNode(node)
