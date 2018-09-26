@@ -108,6 +108,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         var customScene19 = SCNScene()
         var customScene20 = SCNScene()
         var customScene21 = SCNScene()
+        var customScene22 = SCNScene()
 
         switch animationType {
         case .twistForAnnaOne:
@@ -184,6 +185,9 @@ class ViewController: UIViewController, ARSCNViewDelegate {
             skyAnimation(customScene: customScene20)
             customScene21 = SCNScene(named: "art.scnassets/TestGeometry/Sky/Sky_2.scn")!
             skyAnimation(customScene: customScene21)
+            //allien
+            customScene22 = SCNScene(named: "art.scnassets/TestGeometry/Allien/2.scn")!
+            allienNewAnimation(customScene: customScene22)
         }
         addLightToRootScene()
     }
@@ -533,6 +537,27 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         addNodeToSceneView(node: node)
     }
     
+    private func allienNewAnimation(customScene: SCNScene) {
+        // This node will be parent of all the animation models
+        let node = SCNNode()
+        
+        // Add all the child nodes to the parent node
+        for child in customScene.rootNode.childNodes {
+            
+            if let material = child.geometry?.firstMaterial {
+                
+                material.lightingModel = SCNMaterial.LightingModel.physicallyBased
+                material.diffuse.contents = UIImage(named: "art.scnassets/TestGeometry/Allien/Map_Allien/T_LPt_D.png")
+                material.roughness.contents = UIImage(named: "art.scnassets/TestGeometry/Allien/Map_Allien/T_LPt_R.png")
+                material.metalness.contents = UIImage(named: "art.scnassets/TestGeometry/Allien/Map_Allien/T_LP_M.png")
+                material.emission.contents = UIImage(named: "art.scnassets/TestGeometry/Allien/Map_Allien/T_LP_E.png")
+                material.normal.contents = UIImage(named: "art.scnassets/TestGeometry/Allien/Map_Allien/T_LP_N_DX.png")
+            }
+            node.addChildNode(child)
+        }
+        addNodeToSceneView(node: node)
+    }
+    
     private func addNodeToSceneView(node: SCNNode) {
         // Set up some properties
         node.position = SCNVector3(0, -1, -10)
@@ -541,6 +566,6 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         
         // Add the node to the scene
         sceneView.scene.rootNode.addChildNode(node)
-
+        
     }
 }
