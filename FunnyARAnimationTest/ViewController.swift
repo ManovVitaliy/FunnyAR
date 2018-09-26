@@ -86,6 +86,9 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         // Set the scene to the view
         sceneView.scene = scene
         
+        let backgroundImage = UIImage(named: "backgroundSpace")
+        sceneView.scene.background.contents = backgroundImage
+        
         // Create a new scene
         var customScene = SCNScene()
         var customScene2 = SCNScene()
@@ -412,10 +415,11 @@ class ViewController: UIViewController, ARSCNViewDelegate {
                 material.normal.contents = UIImage(named: "art.scnassets/TestGeometry/Project_Life_Cycle/Map_Project_Life_Cycle/T_Projekt_Life_Cycle_N_DX.png")
                 material.ambientOcclusion.contents = UIImage(named: "art.scnassets/TestGeometry/Project_Life_Cycle/Map_Project_Life_Cycle/T_Projekt_Life_Cycle_AO.png")
                 material.emission.contents = UIImage(named: "art.scnassets/TestGeometry/Project_Life_Cycle/Map_Project_Life_Cycle/T_Projekt_Life_Cycle_E.png")
+                material.emission.intensity = 8.0
             }
             node.addChildNode(child)
         }
-        addNodeToSceneView(node: node)
+        addNodeProjectLifeCycleToSceneView(node: node)
     }
     
     private func rocketNewAnimation(customScene: SCNScene) {
@@ -433,6 +437,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
                 material.metalness.contents = UIImage(named: "art.scnassets/TestGeometry/Rocket/Map_Rocket/T_Rocket_M.png")
                 material.normal.contents = UIImage(named: "art.scnassets/TestGeometry/Rocket/Map_Rocket/T_Rocket_DX.png")
                 material.emission.contents = UIImage(named: "art.scnassets/TestGeometry/Rocket/Map_Rocket/T_Rocket_E.png")
+                material.emission.intensity = 8.0
             }
             node.addChildNode(child)
         }
@@ -455,6 +460,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
                 material.normal.contents = UIImage(named: "art.scnassets/TestGeometry/Text/Map_Text/T_Text_N_DX.png")
                 material.ambientOcclusion.contents = UIImage(named: "art.scnassets/TestGeometry/Text/Map_Text/T_Text_AO.png")
                 material.emission.contents = UIImage(named: "art.scnassets/TestGeometry/Text/Map_Text/T_Text_E.png")
+                material.emission.intensity = 8.0
             }
             node.addChildNode(child)
         }
@@ -476,6 +482,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
                 material.metalness.contents = UIImage(named: "art.scnassets/TestGeometry/Yupiter/Map_Yupiter/T_Yupiter_M.png")
                 material.normal.contents = UIImage(named: "art.scnassets/TestGeometry/Yupiter/Map_Yupiter/T_Yupiter_N_DX.png")
                 material.emission.contents = UIImage(named: "art.scnassets/TestGeometry/Yupiter/Map_Yupiter/T_Yupiter_E.png")
+                material.emission.intensity = 8.0
             }
             node.addChildNode(child)
         }
@@ -486,16 +493,8 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         // This node will be parent of all the animation models
         let node = SCNNode()
         
-        let smokeCard = UIColor(red: 0.7, green: 0.7, blue: 0.7, alpha: 0.1)
-        
         // Add all the child nodes to the parent node
         for child in customScene.rootNode.childNodes {
-            if let material = child.geometry?.firstMaterial {
-                
-                material.lightingModel = SCNMaterial.LightingModel.physicallyBased
-                material.transparent.contents = smokeCard
-                material.transparent.intensity = 0.2
-            }
             node.addChildNode(child)
         }
         addNodeToSceneView(node: node)
@@ -558,6 +557,17 @@ class ViewController: UIViewController, ARSCNViewDelegate {
             node.addChildNode(child)
         }
         addNodeAllienToSceneView(node: node)
+    }
+    
+    private func addNodeProjectLifeCycleToSceneView(node: SCNNode) {
+        // Set up some properties
+        node.position = SCNVector3(0.3, -2, -10)
+        node.scale = SCNVector3(0.01, 0.01, 0.01)
+        node.pivot = SCNMatrix4Rotate(node.pivot, 3 * .pi / 2, 0, 1, 0)
+        
+        // Add the node to the scene
+        sceneView.scene.rootNode.addChildNode(node)
+        
     }
     
     private func addNodeToSceneView(node: SCNNode) {
