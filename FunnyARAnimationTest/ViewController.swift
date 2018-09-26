@@ -13,9 +13,6 @@ import ARKit
 enum AnimationType {
     case twistForAnnaOne
     case twistForAnnaTwo
-    case allien
-    case newAllien
-    case allienNew
     case testGeometry
 }
 
@@ -28,6 +25,7 @@ enum ObjectName: String {
     case smoke
     case text
     case yupiter
+    case allien
     
     var description : String {
         switch self {
@@ -36,7 +34,7 @@ enum ObjectName: String {
         case .fire:
             return "Fire"
         case .project_life_cycle:
-            return "Project_life_cycle"
+            return "Project_Life_Cycle"
         case .rocket:
             return "Rocket"
         case .sky:
@@ -47,18 +45,9 @@ enum ObjectName: String {
             return "Text"
         case .yupiter:
             return "Yupiter"
+        case .allien:
+            return "Allien"
         }
-    }
-    
-    func getArray() -> [ObjectName] {
-        return [ObjectName.earth,
-                ObjectName.fire,
-                ObjectName.project_life_cycle,
-                ObjectName.rocket,
-                ObjectName.sky,
-                ObjectName.smoke,
-                ObjectName.text,
-                ObjectName.yupiter,]
     }
 }
 
@@ -86,10 +75,11 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         // Set the scene to the view
         sceneView.scene = scene
         
+        // Set background image
         let backgroundImage = UIImage(named: "backgroundSpace")
         sceneView.scene.background.contents = backgroundImage
         
-        // Create a new scene
+        // Create a new scenes
         var customScene = SCNScene()
         var customScene2 = SCNScene()
         var customScene3 = SCNScene()
@@ -126,45 +116,34 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         case .twistForAnnaTwo:
             customScene = SCNScene(named: "art.scnassets/Twist/twist_danceFixed")!
             addNodeTwistForAnnaTwo(customScene: customScene)
-        case .allien:
-            customScene = SCNScene(named: "art.scnassets/Allien/1.DAE")!
-            allienAnimation(customScene: customScene)
-        case .newAllien:
-            customScene = SCNScene(named: "art.scnassets/Allien/Test_animation_Allien.DAE")!
-            allienAnimation(customScene: customScene)
-        case .allienNew:
-            customScene = SCNScene(named: "art.scnassets/AllienNew/All_1.DAE")!
-            customScene3 = SCNScene(named: "art.scnassets/Allien/1.DAE")!
-            allienAnimation(customScene: customScene)
-            allienAnimationNew(customScene: customScene3)
         case .testGeometry:
             //earth
-            customScene = SCNScene(named: "art.scnassets/TestGeometry/Earth_fixed.scn")!
-            earthAnimation(customScene: customScene)
+            customScene = SCNScene(named: "art.scnassets/TestGeometry/Earth/Earth_fixed.scn")!
+            universalAnimation(customScene: customScene, objectName: .earth)
             //project life cycle
-            customScene2 = SCNScene(named: "art.scnassets/TestGeometry/Project_Life_Cycle.DAE")!
-            projectLifeCycleAnimation(customScene: customScene2)
+            customScene2 = SCNScene(named: "art.scnassets/TestGeometry/Project_Life_Cycle/Project_Life_Cycle.DAE")!
+            universalAnimation(customScene: customScene2, objectName: .project_life_cycle)
             //rocket and nlo
             customScene3 = SCNScene(named: "art.scnassets/TestGeometry/Rocket/Rocket_9.scn")!
-            rocketNewAnimation(customScene: customScene3)
+            universalAnimation(customScene: customScene3, objectName: .rocket)
             customScene4 = SCNScene(named: "art.scnassets/TestGeometry/Rocket/Rocket_8.scn")!
-            rocketNewAnimation(customScene: customScene4)
-            customScene5 = SCNScene(named: "art.scnassets/TestGeometry/Rocket/Rocket_NLO.DAE")!
-            rocketNewAnimation(customScene: customScene5)
+            universalAnimation(customScene: customScene4, objectName: .rocket)
+            customScene5 = SCNScene(named: "art.scnassets/TestGeometry/Rocket/Rocket_NLO_new.scn")!
+            universalAnimation(customScene: customScene5, objectName: .rocket)
             //text
             customScene6 = SCNScene(named: "art.scnassets/TestGeometry/Text/Text_1.scn")!
-            textAnimation(customScene: customScene6)
+            universalAnimation(customScene: customScene6, objectName: .text)
             customScene7 = SCNScene(named: "art.scnassets/TestGeometry/Text/Text_2.scn")!
-            textAnimation(customScene: customScene7)
+            universalAnimation(customScene: customScene7, objectName: .text)
             customScene8 = SCNScene(named: "art.scnassets/TestGeometry/Text/Text_3.scn")!
-            textAnimation(customScene: customScene8)
+            universalAnimation(customScene: customScene8, objectName: .text)
             customScene9 = SCNScene(named: "art.scnassets/TestGeometry/Text/Text_4.scn")!
-            textAnimation(customScene: customScene9)
+            universalAnimation(customScene: customScene9, objectName: .text)
             customScene10 = SCNScene(named: "art.scnassets/TestGeometry/Text/Text_5.scn")!
-            textAnimation(customScene: customScene10)
+            universalAnimation(customScene: customScene10, objectName: .text)
             //yupiter
             customScene11 = SCNScene(named: "art.scnassets/TestGeometry/Yupiter/yupiter.scn")!
-            yupiterAnimation(customScene: customScene11)
+            universalAnimation(customScene: customScene11, objectName: .yupiter)
             //Smoke
             customScene12 = SCNScene(named: "art.scnassets/TestGeometry/SmokeNew/SmokeNew.scn")!
             smokeAnimationNew(customScene: customScene12)
@@ -172,25 +151,25 @@ class ViewController: UIViewController, ARSCNViewDelegate {
             smokeAnimationNew(customScene: customScene13)
             //fire
             customScene14 = SCNScene(named: "art.scnassets/TestGeometry/Fire/Fire_1.scn")!
-            fireAnimation(customScene: customScene14)
+            universalAnimation(customScene: customScene14, objectName: .fire)
             customScene15 = SCNScene(named: "art.scnassets/TestGeometry/Fire/Fire_2.scn")!
-            fireAnimation(customScene: customScene15)
+            universalAnimation(customScene: customScene15, objectName: .fire)
             customScene16 = SCNScene(named: "art.scnassets/TestGeometry/Fire/Fire_3.scn")!
-            fireAnimation(customScene: customScene16)
+            universalAnimation(customScene: customScene16, objectName: .fire)
             customScene17 = SCNScene(named: "art.scnassets/TestGeometry/Fire/Fire_4.scn")!
-            fireAnimation(customScene: customScene17)
+            universalAnimation(customScene: customScene17, objectName: .fire)
             customScene18 = SCNScene(named: "art.scnassets/TestGeometry/Fire/Fire_5.scn")!
-            fireAnimation(customScene: customScene18)
+            universalAnimation(customScene: customScene18, objectName: .fire)
             customScene19 = SCNScene(named: "art.scnassets/TestGeometry/Fire/Fire_6.scn")!
-            fireAnimation(customScene: customScene19)
+            universalAnimation(customScene: customScene19, objectName: .fire)
             //sky
-            customScene20 = SCNScene(named: "art.scnassets/TestGeometry/Sky/Sky_1.scn")!
-            skyAnimation(customScene: customScene20)
-            customScene21 = SCNScene(named: "art.scnassets/TestGeometry/Sky/Sky_3.scn")!
-            skyAnimation(customScene: customScene21)
+//            customScene20 = SCNScene(named: "art.scnassets/TestGeometry/Sky/Sky_1.scn")!
+//            skyAnimation(customScene: customScene20)
+//            customScene21 = SCNScene(named: "art.scnassets/TestGeometry/Sky/Sky_3.scn")!
+//            skyAnimation(customScene: customScene21)
             //allien
-            customScene22 = SCNScene(named: "art.scnassets/TestGeometry/Allien/2.scn")!
-            allienNewAnimation(customScene: customScene22)
+            customScene22 = SCNScene(named: "art.scnassets/TestGeometry/Allien/Allien.scn")!
+            universalAnimation(customScene: customScene22, objectName: .allien)
         }
         addLightToRootScene()
     }
@@ -310,211 +289,12 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         sceneView.scene.rootNode.addChildNode(node)
     }
     
-    private func allienAnimation(customScene: SCNScene) {
-        // This node will be parent of all the animation models
-        let node = SCNNode()
-        
-        // Add all the child nodes to the parent node
-        for child in customScene.rootNode.childNodes {
-            if let material = child.geometry?.firstMaterial {
-
-                material.lightingModel = SCNMaterial.LightingModel.physicallyBased
-
-                material.diffuse.contents = UIImage(named: "art.scnassets/Allien/MAP/T_LPt_D.tga")
-                material.roughness.contents = UIImage(named: "art.scnassets/Allien/MAP/T_LPt_R.png")
-                material.metalness.contents = UIImage(named: "art.scnassets/Allien/MAP/T_LPt_M.png")
-                material.normal.contents = UIImage(named: "art.scnassets/Allien/MAP/T_LP_N_DX.png")
-                material.emission.contents = UIImage(named: "art.scnassets/Allien/MAP/T_LP_E.png")
-                material.ambientOcclusion.contents = UIImage(named: "art.scnassets/Allien/MAP/T_LP_O.png")
-            }
-            node.addChildNode(child)
-        }
-        
-        let envImage = UIImage(named: envImageName)
-        sceneView.scene.lightingEnvironment.contents = envImage
-        sceneView.scene.lightingEnvironment.intensity = lightEnvIntencity
-        
-        // Set up some properties
-        node.position = SCNVector3(0, -1, -5)
-        node.scale = SCNVector3(0.01, 0.01, 0.01)
-        
-        // Add the node to the scene
-        sceneView.scene.rootNode.addChildNode(node)
-    }
-    
-    private func allienAnimationNew(customScene: SCNScene) {
-        // This node will be parent of all the animation models
-        let node = SCNNode()
-        
-        // Add all the child nodes to the parent node
-        for child in customScene.rootNode.childNodes {
-            if let material = child.geometry?.firstMaterial {
-                
-                material.lightingModel = SCNMaterial.LightingModel.physicallyBased
-                
-                material.diffuse.contents = UIImage(named: "art.scnassets/Allien/MAP/T_LPt_D.tga")
-                material.roughness.contents = UIImage(named: "art.scnassets/Allien/MAP/T_LPt_R.png")
-                material.metalness.contents = UIImage(named: "art.scnassets/Allien/MAP/T_LPt_M.png")
-                material.normal.contents = UIImage(named: "art.scnassets/Allien/MAP/T_LP_N_DX.png")
-                material.emission.contents = UIImage(named: "art.scnassets/Allien/MAP/T_LP_E.png")
-                material.ambientOcclusion.contents = UIImage(named: "art.scnassets/Allien/MAP/T_LP_O.png")
-            }
-            
-            if let name = child.name {
-                if name != "Object005" {
-                    node.addChildNode(child)
-                }
-            }
-        }
-        
-        let envImage = UIImage(named: envImageName)
-        sceneView.scene.lightingEnvironment.contents = envImage
-        sceneView.scene.lightingEnvironment.intensity = lightEnvIntencity
-        
-        // Set up some properties
-        node.position = SCNVector3(0, -1, -5)
-        node.scale = SCNVector3(0.01, 0.01, 0.01)
-        
-        // Add the node to the scene
-        sceneView.scene.rootNode.addChildNode(node)
-    }
-    
-    private func earthAnimation(customScene: SCNScene) {
-        // This node will be parent of all the animation models
-        let node = SCNNode()
-        
-        // Add all the child nodes to the parent node
-        for child in customScene.rootNode.childNodes {
-            
-            if let material = child.geometry?.firstMaterial {
-                
-                material.lightingModel = SCNMaterial.LightingModel.physicallyBased
-                material.diffuse.contents = UIImage(named: "art.scnassets/TestGeometry/Map_Earth/T_Earth_D.png")
-                material.roughness.contents = UIImage(named: "art.scnassets/TestGeometry/Map_Earth/T_Earth_R.png")
-                material.metalness.contents = UIImage(named: "art.scnassets/TestGeometry/Map_Earth/T_Earth_M.png")
-                material.normal.contents = UIImage(named: "art.scnassets/TestGeometry/Map_Earth/T_Earth_N_DX.png")
-            }
-            node.addChildNode(child)
-        }
-        addNodeToSceneView(node: node)
-    }
-    
-    private func projectLifeCycleAnimation(customScene: SCNScene) {
-        // This node will be parent of all the animation models
-        let node = SCNNode()
-        
-        // Add all the child nodes to the parent node
-        for child in customScene.rootNode.childNodes {
-            
-            if let material = child.geometry?.firstMaterial {
-                
-                material.lightingModel = SCNMaterial.LightingModel.physicallyBased
-                material.diffuse.contents = UIImage(named: "art.scnassets/TestGeometry/Project_Life_Cycle/Map_Project_Life_Cycle/T_Projekt_Life_Cyclet_D.png")
-                material.roughness.contents = UIImage(named: "art.scnassets/TestGeometry/Project_Life_Cycle/Map_Project_Life_Cycle/T_Projekt_Life_Cyclet_R.png")
-                material.metalness.contents = UIImage(named: "art.scnassets/TestGeometry/Project_Life_Cycle/Map_Project_Life_Cycle/T_Projekt_Life_Cycle_M.png")
-                material.normal.contents = UIImage(named: "art.scnassets/TestGeometry/Project_Life_Cycle/Map_Project_Life_Cycle/T_Projekt_Life_Cycle_N_DX.png")
-                material.ambientOcclusion.contents = UIImage(named: "art.scnassets/TestGeometry/Project_Life_Cycle/Map_Project_Life_Cycle/T_Projekt_Life_Cycle_AO.png")
-                material.emission.contents = UIImage(named: "art.scnassets/TestGeometry/Project_Life_Cycle/Map_Project_Life_Cycle/T_Projekt_Life_Cycle_E.png")
-                material.emission.intensity = 8.0
-            }
-            node.addChildNode(child)
-        }
-        addNodeProjectLifeCycleToSceneView(node: node)
-    }
-    
-    private func rocketNewAnimation(customScene: SCNScene) {
-        // This node will be parent of all the animation models
-        let node = SCNNode()
-        
-        // Add all the child nodes to the parent node
-        for child in customScene.rootNode.childNodes {
-            
-            if let material = child.geometry?.firstMaterial {
-                
-                material.lightingModel = SCNMaterial.LightingModel.physicallyBased
-                material.diffuse.contents = UIImage(named: "art.scnassets/TestGeometry/Rocket/Map_Rocket/T_Rocket_D.png")
-                material.roughness.contents = UIImage(named: "art.scnassets/TestGeometry/Rocket/Map_Rocket/T_Rocket_R.png")
-                material.metalness.contents = UIImage(named: "art.scnassets/TestGeometry/Rocket/Map_Rocket/T_Rocket_M.png")
-                material.normal.contents = UIImage(named: "art.scnassets/TestGeometry/Rocket/Map_Rocket/T_Rocket_DX.png")
-                material.emission.contents = UIImage(named: "art.scnassets/TestGeometry/Rocket/Map_Rocket/T_Rocket_E.png")
-                material.emission.intensity = 8.0
-            }
-            node.addChildNode(child)
-        }
-        addNodeToSceneView(node: node)
-    }
-    
-    private func textAnimation(customScene: SCNScene) {
-        // This node will be parent of all the animation models
-        let node = SCNNode()
-        
-        // Add all the child nodes to the parent node
-        for child in customScene.rootNode.childNodes {
-            
-            if let material = child.geometry?.firstMaterial {
-                
-                material.lightingModel = SCNMaterial.LightingModel.physicallyBased
-                material.diffuse.contents = UIImage(named: "art.scnassets/TestGeometry/Text/Map_Text/T_Text_D.png")
-                material.roughness.contents = UIImage(named: "art.scnassets/TestGeometry/Text/Map_Text/T_Text_R.png")
-                material.metalness.contents = UIImage(named: "art.scnassets/TestGeometry/Text/Map_Text/T_Text_M.png")
-                material.normal.contents = UIImage(named: "art.scnassets/TestGeometry/Text/Map_Text/T_Text_N_DX.png")
-                material.ambientOcclusion.contents = UIImage(named: "art.scnassets/TestGeometry/Text/Map_Text/T_Text_AO.png")
-                material.emission.contents = UIImage(named: "art.scnassets/TestGeometry/Text/Map_Text/T_Text_E.png")
-                material.emission.intensity = 8.0
-            }
-            node.addChildNode(child)
-        }
-        addNodeToSceneView(node: node)
-    }
-    
-    private func yupiterAnimation(customScene: SCNScene) {
-        // This node will be parent of all the animation models
-        let node = SCNNode()
-        
-        // Add all the child nodes to the parent node
-        for child in customScene.rootNode.childNodes {
-            
-            if let material = child.geometry?.firstMaterial {
-                
-                material.lightingModel = SCNMaterial.LightingModel.physicallyBased
-                material.diffuse.contents = UIImage(named: "art.scnassets/TestGeometry/Yupiter/Map_Yupiter/T_Yupiter_D.png")
-                material.roughness.contents = UIImage(named: "art.scnassets/TestGeometry/Yupiter/Map_Yupiter/T_Yupiter_R.png")
-                material.metalness.contents = UIImage(named: "art.scnassets/TestGeometry/Yupiter/Map_Yupiter/T_Yupiter_M.png")
-                material.normal.contents = UIImage(named: "art.scnassets/TestGeometry/Yupiter/Map_Yupiter/T_Yupiter_N_DX.png")
-                material.emission.contents = UIImage(named: "art.scnassets/TestGeometry/Yupiter/Map_Yupiter/T_Yupiter_E.png")
-                material.emission.intensity = 8.0
-            }
-            node.addChildNode(child)
-        }
-        addNodeToSceneView(node: node)
-    }
-    
     private func smokeAnimationNew(customScene: SCNScene) {
         // This node will be parent of all the animation models
         let node = SCNNode()
         
         // Add all the child nodes to the parent node
         for child in customScene.rootNode.childNodes {
-            node.addChildNode(child)
-        }
-        addNodeToSceneView(node: node)
-    }
-    
-    private func fireAnimation(customScene: SCNScene) {
-        // This node will be parent of all the animation models
-        let node = SCNNode()
-        
-        // Add all the child nodes to the parent node
-        for child in customScene.rootNode.childNodes {
-            
-            if let material = child.geometry?.firstMaterial {
-                
-                material.lightingModel = SCNMaterial.LightingModel.physicallyBased
-                material.diffuse.contents = UIImage(named: "art.scnassets/TestGeometry/Fire/Map_Fire/T_Fire_D.png")
-                material.roughness.contents = UIImage(named: "art.scnassets/TestGeometry/Fire/Map_Fire/T_Fire_R.png")
-                material.metalness.contents = UIImage(named: "art.scnassets/TestGeometry/Fire/Map_Fire/T_Fire_M.png")
-                material.emission.contents = UIImage(named: "art.scnassets/TestGeometry/Fire/Map_Fire/T_Fire_E(Emissive).png")
-            }
             node.addChildNode(child)
         }
         addNodeToSceneView(node: node)
@@ -537,8 +317,8 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         }
         addNodeToSceneView(node: node)
     }
-    
-    private func allienNewAnimation(customScene: SCNScene) {
+
+    private func universalAnimation(customScene: SCNScene, objectName: ObjectName) {
         // This node will be parent of all the animation models
         let node = SCNNode()
         
@@ -548,17 +328,30 @@ class ViewController: UIViewController, ARSCNViewDelegate {
             if let material = child.geometry?.firstMaterial {
                 
                 material.lightingModel = SCNMaterial.LightingModel.physicallyBased
-                material.diffuse.contents = UIImage(named: "art.scnassets/TestGeometry/Allien/Map_Allien/T_LPt_D.png")
-                material.roughness.contents = UIImage(named: "art.scnassets/TestGeometry/Allien/Map_Allien/T_LPt_R.png")
-                material.metalness.contents = UIImage(named: "art.scnassets/TestGeometry/Allien/Map_Allien/T_LP_M.png")
-                material.emission.contents = UIImage(named: "art.scnassets/TestGeometry/Allien/Map_Allien/T_LP_E.png")
-                material.normal.contents = UIImage(named: "art.scnassets/TestGeometry/Allien/Map_Allien/T_LP_N_DX.png")
+                material.diffuse.contents = UIImage(named: "art.scnassets/TestGeometry/\(objectName.description)/Map_\(objectName.description)/T_\(objectName.description)_D.png")
+                material.roughness.contents = UIImage(named: "art.scnassets/TestGeometry/\(objectName.description)/Map_\(objectName.description)/T_\(objectName.description)_R.png")
+                material.metalness.contents = UIImage(named: "art.scnassets/TestGeometry/\(objectName.description)/Map_\(objectName.description)/T_\(objectName.description)_M.png")
+                material.normal.contents = UIImage(named: "art.scnassets/TestGeometry/\(objectName.description)/Map_\(objectName.description)/T_\(objectName.description)_N_DX.png")
+                material.ambientOcclusion.contents = UIImage(named: "art.scnassets/TestGeometry/\(objectName.description)/Map_\(objectName.description)/T_\(objectName.description)_AO.png")
+                material.emission.contents = UIImage(named: "art.scnassets/TestGeometry/\(objectName.description)/Map_\(objectName.description)/T_\(objectName.description)_E.png")
+                material.emission.intensity = 8.0
             }
             node.addChildNode(child)
         }
-        addNodeAllienToSceneView(node: node)
+        
+        switch objectName {
+        case .project_life_cycle:
+            addNodeProjectLifeCycleToSceneView(node: node)
+        case .allien:
+            addNodeAllienToSceneView(node: node)
+        case .earth, .fire, .rocket, .text, .yupiter:
+            addNodeToSceneView(node: node)
+        default:
+            break
+        }
     }
     
+    //MARK: - add nodes to ARSceneView's root node
     private func addNodeProjectLifeCycleToSceneView(node: SCNNode) {
         // Set up some properties
         node.position = SCNVector3(0.3, -2, -10)
@@ -567,7 +360,6 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         
         // Add the node to the scene
         sceneView.scene.rootNode.addChildNode(node)
-        
     }
     
     private func addNodeToSceneView(node: SCNNode) {
@@ -578,7 +370,6 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         
         // Add the node to the scene
         sceneView.scene.rootNode.addChildNode(node)
-        
     }
     
     private func addNodeAllienToSceneView(node: SCNNode) {
@@ -590,6 +381,5 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         
         // Add the node to the scene
         sceneView.scene.rootNode.addChildNode(node)
-        
     }
 }
