@@ -141,7 +141,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
             customScene2 = SCNScene(named: "art.scnassets/TestGeometry/Project_Life_Cycle.DAE")!
             projectLifeCycleAnimation(customScene: customScene2)
             //rocket and nlo
-            customScene3 = SCNScene(named: "art.scnassets/TestGeometry/Rocket/Rocket_6.scn")!
+            customScene3 = SCNScene(named: "art.scnassets/TestGeometry/Rocket/Rocket_9.scn")!
             rocketNewAnimation(customScene: customScene3)
             customScene4 = SCNScene(named: "art.scnassets/TestGeometry/Rocket/Rocket_8.scn")!
             rocketNewAnimation(customScene: customScene4)
