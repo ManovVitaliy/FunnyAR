@@ -13,6 +13,9 @@
 		CE48A67D214B9A3100CC4F24 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE48A67B214B9A3100CC4F24 /* Main.storyboard */; };
 		CE48A67F214B9A3300CC4F24 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CE48A67E214B9A3300CC4F24 /* Assets.xcassets */; };
 		CE48A682214B9A3300CC4F24 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE48A680214B9A3300CC4F24 /* LaunchScreen.storyboard */; };
+		CEEA85C5215E46860034C49E /* ObjectNodeName.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEEA85C4215E46860034C49E /* ObjectNodeName.swift */; };
+		CEEA85C7215E48350034C49E /* ARSceneConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEEA85C6215E48350034C49E /* ARSceneConstants.swift */; };
+		CEEA85CB215E4DB30034C49E /* NodeMaterialHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEEA85CA215E4DB30034C49E /* NodeMaterialHelper.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +27,9 @@
 		CE48A67E214B9A3300CC4F24 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		CE48A681214B9A3300CC4F24 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		CE48A683214B9A3300CC4F24 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CEEA85C4215E46860034C49E /* ObjectNodeName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectNodeName.swift; sourceTree = "<group>"; };
+		CEEA85C6215E48350034C49E /* ARSceneConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARSceneConstants.swift; sourceTree = "<group>"; };
+		CEEA85CA215E4DB30034C49E /* NodeMaterialHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeMaterialHelper.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,15 +62,26 @@
 		CE48A674214B9A3100CC4F24 /* FunnyARAnimationTest */ = {
 			isa = PBXGroup;
 			children = (
+				CEEA85C3215E46170034C49E /* ARSceneViewModule */,
 				CE48A675214B9A3100CC4F24 /* AppDelegate.swift */,
 				CE48A677214B9A3100CC4F24 /* art.scnassets */,
-				CE48A679214B9A3100CC4F24 /* ViewController.swift */,
 				CE48A67B214B9A3100CC4F24 /* Main.storyboard */,
 				CE48A67E214B9A3300CC4F24 /* Assets.xcassets */,
 				CE48A680214B9A3300CC4F24 /* LaunchScreen.storyboard */,
 				CE48A683214B9A3300CC4F24 /* Info.plist */,
 			);
 			path = FunnyARAnimationTest;
+			sourceTree = "<group>";
+		};
+		CEEA85C3215E46170034C49E /* ARSceneViewModule */ = {
+			isa = PBXGroup;
+			children = (
+				CE48A679214B9A3100CC4F24 /* ViewController.swift */,
+				CEEA85C4215E46860034C49E /* ObjectNodeName.swift */,
+				CEEA85C6215E48350034C49E /* ARSceneConstants.swift */,
+				CEEA85CA215E4DB30034C49E /* NodeMaterialHelper.swift */,
+			);
+			path = ARSceneViewModule;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -139,8 +156,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CEEA85C5215E46860034C49E /* ObjectNodeName.swift in Sources */,
 				CE48A67A214B9A3100CC4F24 /* ViewController.swift in Sources */,
+				CEEA85CB215E4DB30034C49E /* NodeMaterialHelper.swift in Sources */,
 				CE48A676214B9A3100CC4F24 /* AppDelegate.swift in Sources */,
+				CEEA85C7215E48350034C49E /* ARSceneConstants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
