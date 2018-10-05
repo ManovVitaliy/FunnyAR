@@ -28,6 +28,6 @@ struct ARSceneConstants {
     //allNodes
     let nodePosition = SCNVector3(-0.8, -2, -10)
     
-    //aallienNode
+    //allienNode
     let allienNodePosition = SCNVector3(0, -2, -8)
 }

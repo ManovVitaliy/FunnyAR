@@ -184,17 +184,36 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         // This node will be parent of all the animation models
         let node = SCNNode()
         
+        let maxDuration: Double?
+        var durationsArray = [Double]()
+        
         // Add all the child nodes to the parent node
         for child in customScene.rootNode.childNodes {
             node.addChildNode(child)
+            
+            for animationKey in child.animationKeys {
+                if let duration = child.animationPlayer(forKey: animationKey)?.animation.duration {
+                    durationsArray.append(Double(duration))
+                }
+            }
         }
+        maxDuration = durationsArray.max()
+        
         addNodeToSceneView(node: node)
+        
+        defer {
+            if let maxDur = maxDuration {
+                stopNode(node: node, maxDuration: maxDur)
+            }
+        }
     }
     
     private func skyAnimation(customScene: SCNScene) {
         // This node will be parent of all the animation models
         let node = SCNNode()
         
+        let maxDuration: Double?
+        var durationsArray = [Double]()
         // Add all the child nodes to the parent node
         for child in customScene.rootNode.childNodes {
             if let material = child.geometry?.firstMaterial {
@@ -203,21 +222,45 @@ class ViewController: UIViewController, ARSCNViewDelegate {
                 material.transparency = 0.8
             }
             node.addChildNode(child)
+            
+            for animationKey in child.animationKeys {
+                if let duration = child.animationPlayer(forKey: animationKey)?.animation.duration {
+                    durationsArray.append(Double(duration))
+                }
+            }
         }
+        maxDuration = durationsArray.max()
+        
         addNodeToSceneView(node: node)
+        
+        defer {
+            if let maxDur = maxDuration {
+                stopNode(node: node, maxDuration: maxDur)
+            }
+        }
     }
 
     private func universalAnimation(customScene: SCNScene, objectName: ObjectName) {
         // This node will be parent of all the animation models
         let node = SCNNode()
         
+        let maxDuration: Double?
+        var durationsArray = [Double]()
         // Add all the child nodes to the parent node
         for child in customScene.rootNode.childNodes {
             if let material = child.geometry?.firstMaterial {
                 nodeMaterialHelper.setupCardToMaterial(material: material, objectName: objectName.description)
             }
             node.addChildNode(child)
+            
+            for animationKey in child.animationKeys {
+                if let duration = child.animationPlayer(forKey: animationKey)?.animation.duration {
+                    durationsArray.append(Double(duration))
+                }
+            }
         }
+        
+        maxDuration = durationsArray.max()
         
         switch objectName {
         case .project_life_cycle:
@@ -229,6 +272,13 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         default:
             break
         }
+        
+        defer {
+            if let maxDur = maxDuration {
+                stopNode(node: node, maxDuration: maxDur)
+            }
+        }
+        
     }
     
     //MARK: - add nodes to ARSceneView's root node
@@ -265,5 +315,15 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         
         // Add the node to the scene
         sceneView.scene.rootNode.addChildNode(node)
+    }
+    
+    private func stopNode(node: SCNNode, maxDuration: Double) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + maxDuration - 2.0) { [weak self] in
+            if let nodes = self?.sceneView?.scene.rootNode.childNodes {
+                for node in nodes {
+                    node.isPaused = true
+                }
+            }
+        }
     }
 }
