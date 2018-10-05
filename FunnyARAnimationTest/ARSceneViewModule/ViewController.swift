@@ -23,6 +23,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     private var animationType: AnimationType = .testGeometry
     private var sceneConstants = ARSceneConstants()
     private let nodeMaterialHelper = NodeMaterialHelper()
+    private var durationCalculator = DurationCalculator()
     
     //MARK: - view controller life cycle
     override func viewDidLoad() {
@@ -184,27 +185,20 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         // This node will be parent of all the animation models
         let node = SCNNode()
         
-        let maxDuration: Double?
-        var durationsArray = [Double]()
-        
+        var maxDuration: Double?
         // Add all the child nodes to the parent node
         for child in customScene.rootNode.childNodes {
             node.addChildNode(child)
             
-            for animationKey in child.animationKeys {
-                if let duration = child.animationPlayer(forKey: animationKey)?.animation.duration {
-                    durationsArray.append(Double(duration))
-                }
+            defer {
+                maxDuration = durationCalculator.getMaxDurationValue(node: node)
             }
         }
-        maxDuration = durationsArray.max()
         
         addNodeToSceneView(node: node)
-        
-        defer {
-            if let maxDur = maxDuration {
-                stopNode(node: node, maxDuration: maxDur)
-            }
+
+        if let maxDur = maxDuration {
+            stopNode(node: node, maxDuration: maxDur)
         }
     }
     
@@ -212,8 +206,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         // This node will be parent of all the animation models
         let node = SCNNode()
         
-        let maxDuration: Double?
-        var durationsArray = [Double]()
+        var maxDuration: Double?
         // Add all the child nodes to the parent node
         for child in customScene.rootNode.childNodes {
             if let material = child.geometry?.firstMaterial {
@@ -223,20 +216,15 @@ class ViewController: UIViewController, ARSCNViewDelegate {
             }
             node.addChildNode(child)
             
-            for animationKey in child.animationKeys {
-                if let duration = child.animationPlayer(forKey: animationKey)?.animation.duration {
-                    durationsArray.append(Double(duration))
-                }
+            defer {
+                maxDuration = durationCalculator.getMaxDurationValue(node: node)
             }
         }
-        maxDuration = durationsArray.max()
         
         addNodeToSceneView(node: node)
         
-        defer {
-            if let maxDur = maxDuration {
-                stopNode(node: node, maxDuration: maxDur)
-            }
+        if let maxDur = maxDuration {
+            stopNode(node: node, maxDuration: maxDur)
         }
     }
 
@@ -244,8 +232,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         // This node will be parent of all the animation models
         let node = SCNNode()
         
-        let maxDuration: Double?
-        var durationsArray = [Double]()
+        var maxDuration: Double?
         // Add all the child nodes to the parent node
         for child in customScene.rootNode.childNodes {
             if let material = child.geometry?.firstMaterial {
@@ -253,14 +240,10 @@ class ViewController: UIViewController, ARSCNViewDelegate {
             }
             node.addChildNode(child)
             
-            for animationKey in child.animationKeys {
-                if let duration = child.animationPlayer(forKey: animationKey)?.animation.duration {
-                    durationsArray.append(Double(duration))
-                }
+            defer {
+                maxDuration = durationCalculator.getMaxDurationValue(node: node)
             }
         }
-        
-        maxDuration = durationsArray.max()
         
         switch objectName {
         case .project_life_cycle:
@@ -273,12 +256,9 @@ class ViewController: UIViewController, ARSCNViewDelegate {
             break
         }
         
-        defer {
-            if let maxDur = maxDuration {
-                stopNode(node: node, maxDuration: maxDur)
-            }
+        if let maxDur = maxDuration {
+            stopNode(node: node, maxDuration: maxDur)
         }
-        
     }
     
     //MARK: - add nodes to ARSceneView's root node
@@ -318,6 +298,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     }
     
     private func stopNode(node: SCNNode, maxDuration: Double) {
+        // stop animation two seconds before the end
         DispatchQueue.main.asyncAfter(deadline: .now() + maxDuration - 2.0) { [weak self] in
             if let nodes = self?.sceneView?.scene.rootNode.childNodes {
                 for node in nodes {
